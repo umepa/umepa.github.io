@@ -14,7 +14,6 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
-        /* Karanlık Mod İçin Stil */
         body.dark-mode {
             background-color: #121212;
             color: #ffffff;
@@ -60,7 +59,6 @@
             background-color: #218838;
         }
 
-        /* Karanlık modda butonların rengi değişiyor */
         .dark-mode-toggle {
             margin-top: 20px;
             padding: 10px 15px;
@@ -74,7 +72,6 @@
         .dark-mode-toggle:hover {
             background-color: #005bb5;
         }
-
     </style>
 </head>
 <body>
@@ -82,46 +79,71 @@
 <div class="navbar">
     <a href="/">Ana Sayfa</a>
     <a href="/downloads">İndirme Bölümü</a>
-    <a href="/sosyal">Sosyal Medya</a>  <!-- Yeni bağlantı eklendi -->
+    <a href="/sosyal">Sosyal Medya</a>
 </div>
 
+<h1>İndirme Yeri</h1>
+<p>Bu dosyaları indirebilirsiniz:</p>
 
-    <h1>İndirme Yeri</h1>
-    <p>Bu Dosyaları indirebilirsiniz:</p>
+<ul id="file-list" class="file-list">
+    <li>Yükleniyor...</li>
+</ul>
 
-    <ul class="file-list">
-        {% for file in files %}
-            <li><a href="{{ url_for('download_file', filename=file) }}">{{ file }}</a></li>
-        {% endfor %}
-    </ul>
+<button class="dark-mode-toggle" onclick="toggleDarkMode()">Karanlık Modu Aktif Et</button>
 
-    <!-- Karanlık mod geçişi için buton -->
-    <button class="dark-mode-toggle" onclick="toggleDarkMode()">Karanlık Modu Aktif Et</button>
-
-    <script>
-        // Sayfa yüklendiğinde karanlık modu kontrol et
-        window.onload = function() {
-            if(localStorage.getItem('darkMode') === 'true') {
-                document.body.classList.add('dark-mode');
-                document.querySelector('.dark-mode-toggle').textContent = "Karanlık Modu Kapat";
-            }
-        };
-
-        function toggleDarkMode() {
-            const body = document.body;
-            const isDarkMode = body.classList.contains('dark-mode');
-
-            if (!isDarkMode) {
-                body.classList.add('dark-mode');
-                document.querySelector('.dark-mode-toggle').textContent = "Karanlık Modu Kapat";
-                localStorage.setItem('darkMode', 'true');
-            } else {
-                body.classList.remove('dark-mode');
-                document.querySelector('.dark-mode-toggle').textContent = "Karanlık Modu Aktif Et";
-                localStorage.setItem('darkMode', 'false');
-            }
+<script>
+    // Karanlık mod kontrolü
+    window.onload = function () {
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('.dark-mode-toggle').textContent = "Karanlık Modu Kapat";
         }
-    </script>
+        fetchFiles();
+    };
+
+    function toggleDarkMode() {
+        const body = document.body;
+        const isDarkMode = body.classList.contains('dark-mode');
+
+        if (!isDarkMode) {
+            body.classList.add('dark-mode');
+            document.querySelector('.dark-mode-toggle').textContent = "Karanlık Modu Kapat";
+            localStorage.setItem('darkMode', 'true');
+        } else {
+            body.classList.remove('dark-mode');
+            document.querySelector('.dark-mode-toggle').textContent = "Karanlık Modu Aktif Et";
+            localStorage.setItem('darkMode', 'false');
+        }
+    }
+
+    // GitHub API'den dosya listesini çek
+    function fetchFiles() {
+        const user = "umepa";
+        const repo = "umepa.github.io";
+        const path = "downloads";
+
+        fetch(`https://api.github.com/repos/${user}/${repo}/contents/${path}`)
+            .then(response => response.json())
+            .then(data => {
+                const fileList = document.getElementById("file-list");
+                fileList.innerHTML = "";
+
+                data.forEach(file => {
+                    const li = document.createElement("li");
+                    const a = document.createElement("a");
+                    a.href = file.download_url;
+                    a.download = "";
+                    a.textContent = file.name;
+                    li.appendChild(a);
+                    fileList.appendChild(li);
+                });
+            })
+            .catch(error => {
+                document.getElementById("file-list").innerHTML = "<li>Dosyalar alınamadı.</li>";
+                console.error("Dosya çekme hatası:", error);
+            });
+    }
+</script>
 
 </body>
 </html>
