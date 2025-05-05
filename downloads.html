@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İndirme Bölümü</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f4f4f4;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Karanlık Mod İçin Stil */
+        body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        .navbar {
+            background-color: #0073e6;
+            padding: 10px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: inline-block;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .file-list {
+            padding: 20px;
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .file-list li {
+            margin: 10px 0;
+        }
+
+        .file-list a {
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .file-list a:hover {
+            background-color: #218838;
+        }
+
+        /* Karanlık modda butonların rengi değişiyor */
+        .dark-mode-toggle {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #0073e6;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: #005bb5;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/">Ana Sayfa</a>
+    <a href="/downloads">İndirme Bölümü</a>
+    <a href="/sosyal">Sosyal Medya</a>  <!-- Yeni bağlantı eklendi -->
+</div>
+
+
+    <h1>İndirme Yeri</h1>
+    <p>Bu Dosyaları indirebilirsiniz:</p>
+
+    <ul class="file-list">
+        {% for file in files %}
+            <li><a href="{{ url_for('download_file', filename=file) }}">{{ file }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <!-- Karanlık mod geçişi için buton -->
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()">Karanlık Modu Aktif Et</button>
+
+    <script>
+        // Sayfa yüklendiğinde karanlık modu kontrol et
+        window.onload = function() {
+            if(localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                document.querySelector('.dark-mode-toggle').textContent = "Karanlık Modu Kapat";
+            }
+        };
+
+        function toggleDarkMode() {
+            const body = document.body;
+            const isDarkMode = body.classList.contains('dark-mode');
+
+            if (!isDarkMode) {
+                body.classList.add('dark-mode');
+                document.querySelector('.dark-mode-toggle').textContent = "Karanlık Modu Kapat";
+                localStorage.setItem('darkMode', 'true');
+            } else {
+                body.classList.remove('dark-mode');
+                document.querySelector('.dark-mode-toggle').textContent = "Karanlık Modu Aktif Et";
+                localStorage.setItem('darkMode', 'false');
+            }
+        }
+    </script>
+
+</body>
+</html>
