@@ -116,23 +116,19 @@
         }
     }
 
-    // GitHub API'den dosya listesini çek
+    // JSON dosyasından dosya listelerini çekme
     function fetchFiles() {
-        const user = "umepa";
-        const repo = "umepa.github.io";
-        const path = "downloads";
-
-        fetch(`https://api.github.com/repos/${user}/${repo}/contents/${path}`)
+        fetch('https://umepa.github.io/downloads.json') // JSON dosyasının GitHub Pages üzerinden erişilen URL'si
             .then(response => response.json())
             .then(data => {
                 const fileList = document.getElementById("file-list");
                 fileList.innerHTML = "";
 
-                data.forEach(file => {
+                data.files.forEach(file => {
                     const li = document.createElement("li");
                     const a = document.createElement("a");
-                    a.href = file.download_url;
-                    a.download = "";
+                    a.href = file.url;
+                    a.download = file.name; // Dosyanın indirilebilmesi için 'download' özelliği
                     a.textContent = file.name;
                     li.appendChild(a);
                     fileList.appendChild(li);
