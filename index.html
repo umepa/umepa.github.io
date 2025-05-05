@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="az3aplyGoWed1q5g67PKx_N32cWnUNC71I_OScs0G9s" />
+    <title>Umepa - Web Sitesi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        .navbar {
+            background-color: #0073e6;
+            padding: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: inline-block;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            padding: 20px;
+            flex: 1;
+        }
+
+        .profile-img {
+            width: 200px;
+            border-radius: 50%;
+            margin-top: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .social-links a {
+            display: inline-block;
+            margin: 10px;
+            text-decoration: none;
+            color: #0073e6;
+            font-size: 18px;
+        }
+
+        .social-links a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            background-color: #222;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .footer.dark-mode {
+            background-color: #333;
+        }
+
+        .dark-mode-toggle {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #0073e6;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: #005bb5;
+            transform: scale(1.05);
+        }
+
+        .lang-switch {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .lang-switch:hover {
+            background-color: #e68900;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="index.html">Ana Sayfa</a>
+        <a href="downloads.html">İndirme Bölümü</a>
+        <a href="sosyal.html">Sosyal Medya</a>
+    </div>
+
+    <div class="content">
+        <h1>Merhaba! Ben Umepa</h1>
+
+        <!-- Profil Fotoğrafı -->
+        <img src="assets/profil.png" alt="Profil Fotoğrafı" class="profile-img">
+
+        <h2 id="hakkimda">Hakkımda</h2>
+        <p>Ben Umutcan Geniş. Teknoloji ve programlama ile ilgileniyorum. Kendimi geliştirmeyi ve yeni şeyler öğrenmeyi seviyorum.</p>
+
+        <!-- İngilizce Siteye Gitme Butonu -->
+        <a href="index-en.html" class="lang-switch">🇬🇧 English</a>
+
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()">Karanlık Modu Aktif Et</button>
+    </div>
+
+    <div class="footer">
+        © 2025 Umutcan Geniş. Tüm hakları saklıdır.
+    </div>
+
+    <script>
+        window.onload = function() {
+            if(localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                document.querySelector('.dark-mode-toggle').textContent = "Karanlık Modu Kapat";
+            }
+        };
+
+        function toggleDarkMode() {
+            const body = document.body;
+            const isDarkMode = body.classList.contains('dark-mode');
+
+            if (!isDarkMode) {
+                body.classList.add('dark-mode');
+                document.querySelector('.dark-mode-toggle').textContent = "Karanlık Modu Kapat";
+                localStorage.setItem('darkMode', 'true');
+            } else {
+                body.classList.remove('dark-mode');
+                document.querySelector('.dark-mode-toggle').textContent = "Karanlık Modu Aktif Et";
+                localStorage.setItem('darkMode', 'false');
+            }
+        }
+    </script>
+
+</body>
+</html>
