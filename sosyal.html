@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sosyal Medya</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f4f4f4;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Karanlık Mod İçin Stil */
+        body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        .navbar {
+            background-color: #0073e6;
+            padding: 10px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: inline-block;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .social-links a {
+            display: inline-block;
+            margin: 10px;
+            text-decoration: none;
+            color: #0073e6;
+            font-size: 18px;
+        }
+
+        .social-links a:hover {
+            text-decoration: underline;
+        }
+
+        .dark-mode-toggle {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #0073e6;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: #005bb5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="/">Ana Sayfa</a>
+        <a href="/downloads">İndirme Bölümü</a>
+        <a href="/sosyal">Sosyal Medya</a>
+    </div>
+
+    <div class="content">
+        <h1>Sosyal Medya Hesaplarım</h1>
+        <p>Beni sosyal medya hesaplarım üzerinden takip edebilirsiniz:</p>
+
+        <div class="social-links">
+            <a href="" target="_blank"></a>
+            <a href="https://www.youtube.com/@Umepa35" target="_blank">YouTube</a>
+            <a href="https://github.com/umepa" target="_blank">GitHub</a>
+            <a href="https://www.instagram.com/whoisumut35/" target="_blank">Instagram</a>
+        </div>
+
+        <!-- Karanlık Mod Butonu -->
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()">Karanlık Modu Aktif Et</button>
+    </div>
+
+    <script>
+        // Sayfa yüklendiğinde karanlık modu kontrol et
+        window.onload = function() {
+            if(localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                document.querySelector('.dark-mode-toggle').textContent = "Karanlık Modu Kapat";
+            }
+        };
+
+        function toggleDarkMode() {
+            const body = document.body;
+            const isDarkMode = body.classList.contains('dark-mode');
+
+            if (!isDarkMode) {
+                body.classList.add('dark-mode');
+                document.querySelector('.dark-mode-toggle').textContent = "Karanlık Modu Kapat";
+                localStorage.setItem('darkMode', 'true');
+            } else {
+                body.classList.remove('dark-mode');
+                document.querySelector('.dark-mode-toggle').textContent = "Karanlık Modu Aktif Et";
+                localStorage.setItem('darkMode', 'false');
+            }
+        }
+    </script>
+
+</body>
+</html>
