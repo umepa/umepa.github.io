@@ -1,37 +1,134 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Haberler | Umepa</title>
-  <link rel="stylesheet" href="style.css"> <!-- varsa CSS dosyan -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umepa - Haberler</title>
+    <style>
+        /* Mevcut CSS aynı şekilde bırakıldı */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .navbar {
+            background-color: #0073e6;
+            padding: 10px;
+            transition: background-color 0.3s;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: inline-block;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .content {
+            padding: 20px;
+            flex: 1;
+        }
+        .haber {
+            background-color: white;
+            padding: 15px;
+            margin: 15px auto;
+            max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        .haber h3 {
+            color: #0073e6;
+        }
+        .footer {
+            background-color: #222;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        .footer.dark-mode {
+            background-color: #333;
+        }
+        .dark-mode-toggle {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #0073e6;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .dark-mode-toggle:hover {
+            background-color: #005bb5;
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Haberler</h1>
-    <nav>
-      <a href="index.html">Ana Sayfa</a> |
-      <a href="downloads.html">İndir</a> |
-      <a href="sosyal.html">Sosyal</a>
-    </nav>
-  </header>
 
-  <main>
-    <section>
-      <h2>[8 Mayıs 2025] Popüler Bir Android Uygulamasında Truva Atı Çıktı</h2>
-      <p>Son zamanlarda 1 milyondan fazla indirilen bir Android uygulamasında kötü amaçlı yazılım tespit edildi...</p>
-    </section>
+    <div class="navbar">
+        <a href="index.html">Ana Sayfa</a>
+        <a href="downloads.html">İndirme Bölümü</a>
+        <a href="sosyal.html">Sosyal Medya</a>
+        <a href="news.html">Haberler</a>
+    </div>
 
-    <section>
-      <h2>[7 Mayıs 2025] Türkiye'de Sosyal Medya Düzenlemeleri Gündemde</h2>
-      <p>TBMM'ye sunulan yeni yasa tasarısı ile sosyal medya platformlarının denetimi artıyor...</p>
-    </section>
+    <div class="content">
+        <h1>Güncel Haberler</h1>
 
-    <!-- Yeni haber eklemek için sadece yeni <section> blokları oluştur -->
-  </main>
+        <div class="haber">
+            <h3>[8 Mayıs 2025] Zararlı Android Uygulaması Ortaya Çıktı</h3>
+            <p>1 milyondan fazla indirilen popüler bir Android uygulamasında kötü amaçlı yazılım tespit edildi. Uygulamanın cihazdaki verileri izinsiz olarak topladığı bildiriliyor.</p>
+        </div>
 
-  <footer>
-    <p>© 2025 Umepa</p>
-  </footer>
+        <div class="haber">
+            <h3>[7 Mayıs 2025] Türkiye'de Yeni Sosyal Medya Düzenlemesi</h3>
+            <p>Türkiye'de sosyal medya platformları için yeni yasal düzenlemeler gündemde. Kanun teklifine göre platformlara daha sıkı denetimler geliyor.</p>
+        </div>
+
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()">Karanlık Modu Aktif Et</button>
+    </div>
+
+    <div class="footer">
+        © 2025 Umutcan Geniş. Tüm hakları saklıdır.
+    </div>
+
+    <script>
+        window.onload = function() {
+            if(localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                document.querySelector('.dark-mode-toggle').textContent = "Karanlık Modu Kapat";
+            }
+        };
+
+        function toggleDarkMode() {
+            const body = document.body;
+            const isDarkMode = body.classList.contains('dark-mode');
+
+            if (!isDarkMode) {
+                body.classList.add('dark-mode');
+                document.querySelector('.dark-mode-toggle').textContent = "Karanlık Modu Kapat";
+                localStorage.setItem('darkMode', 'true');
+            } else {
+                body.classList.remove('dark-mode');
+                document.querySelector('.dark-mode-toggle').textContent = "Karanlık Modu Aktif Et";
+                localStorage.setItem('darkMode', 'false');
+            }
+        }
+    </script>
+
 </body>
 </html>
