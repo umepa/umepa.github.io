@@ -1,26 +1,38 @@
-
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UMEPA - Minecraft Style</title>
+  <link rel="preconnect" href="https://fonts.cdnfonts.com">
   <link href="https://fonts.cdnfonts.com/css/minecraftia" rel="stylesheet">
   <style>
     body {
       margin: 0;
       height: 100vh;
-      background: url('https://i.imgur.com/fz6tG7Q.png'); /* pixel-art tarzı bir blok arka plan */
-      background-size: 64px;
+      background-image: url('https://i.imgur.com/fz6tG7Q.png');
+      background-size: 64px 64px;
+      background-repeat: repeat;
       display: flex;
       justify-content: center;
       align-items: center;
       font-family: 'Minecraftia', sans-serif;
+      overflow: hidden;
     }
 
     h1 {
-      font-size: 5rem;
+      font-size: 6rem;
       color: #00ff00;
       text-shadow: 4px 4px #000;
-      letter-spacing: 1rem;
+      letter-spacing: 1.2rem;
+      text-align: center;
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 3rem;
+        letter-spacing: 0.5rem;
+      }
     }
   </style>
 </head>
