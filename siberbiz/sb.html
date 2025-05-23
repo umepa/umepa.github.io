@@ -1,98 +1,471 @@
-<script>
-const messages = document.getElementById('messages');
-const userInput = document.getElementById('userInput');
-const sendBtn = document.getElementById('sendBtn');
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SiberBiz AI</title>
+<style>
+  /* CSS aynı */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Inter', sans-serif;
+    background: #202124;
+    color: #e8eaed;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    transition: background 0.3s, color 0.3s;
+  }
+  body.light {
+    background: #f5f5f5;
+    color: #202124;
+  }
+  header {
+    background: #1a73e8;
+    padding: 16px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: white;
+    box-shadow: 0 2px 4px rgb(26 115 232 / 0.5);
+    position: relative;
+  }
+  #toggleTheme {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: color 0.3s;
+  }
+  #languageSelector {
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    border-radius: 6px;
+    padding: 4px;
+  }
+  nav {
+    display: flex;
+    background: #303134;
+  }
+  nav button {
+    flex: 1;
+    padding: 12px 0;
+    border: none;
+    background: #303134;
+    color: #8ab4f8;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+    font-size: 1rem;
+  }
+  nav button.active, nav button:hover {
+    background: #1a73e8;
+    color: white;
+  }
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: inherit;
+    padding: 12px 16px;
+    overflow: hidden;
+  }
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .message {
+    max-width: 75%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+    position: relative;
+    word-break: break-word;
+  }
+  .message.user {
+    align-self: flex-end;
+    background: #1a73e8;
+    color: white;
+    border-bottom-right-radius: 6px;
+  }
+  .message.bot {
+    align-self: flex-start;
+    background: #3c4043;
+    color: #e8eaed;
+    border-bottom-left-radius: 6px;
+  }
+  .timestamp {
+    font-size: 0.7rem;
+    opacity: 0.6;
+    position: absolute;
+    bottom: 4px;
+    right: 12px;
+    user-select: none;
+  }
+  .input-area {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+  }
+  input[type="text"] {
+    flex: 1;
+    padding: 14px 18px;
+    border-radius: 24px;
+    border: none;
+    font-size: 1rem;
+    background: #303134;
+    color: #e8eaed;
+    outline-offset: 2px;
+    transition: background 0.3s, color 0.3s;
+  }
+  body.light input[type="text"] {
+    background: #eee;
+    color: #222;
+  }
+  input[type="text"]::placeholder {
+    color: #8a8a8a;
+  }
+  button.send {
+    background: #1a73e8;
+    border: none;
+    border-radius: 24px;
+    color: white;
+    font-weight: 700;
+    padding: 0 20px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  button.send:hover {
+    background: #155ab6;
+  }
+  button.clear {
+    background: #e84545;
+    border: none;
+    border-radius: 24px;
+    color: white;
+    font-weight: 700;
+    padding: 0 16px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  button.clear:hover {
+    background: #b73434;
+  }
+  img.generated {
+    max-width: 100%;
+    border-radius: 16px;
+    margin-top: 8px;
+    box-shadow: 0 4px 8px rgb(26 115 232 / 0.4);
+  }
+  .credits {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 1.2rem;
+    color: #8ab4f8;
+  }
+  .messages::-webkit-scrollbar {
+    width: 6px;
+  }
+  .messages::-webkit-scrollbar-thumb {
+    background: #5f6368;
+    border-radius: 3px;
+  }
+</style>
+</head>
+<body>
 
-// === BURAYA KENDİ API ANAHTARINI YAPIŞTIR (Bearer ile birlikte) ===
-const apiKey = "Bearer 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";
+<header>
+  SiberBiz AI
+  <select id="languageSelector" title="Dil seç">
+    <option value="tr">Türkçe</option>
+    <option value="en">English</option>
+    <option value="fr">Français</option>
+    <option value="de">Deutsch</option>
+    <option value="es">Español</option>
+    <option value="ru">Русский</option>
+    <option value="zh">中文</option>
+    <option value="ja">日本語</option>
+    <option value="ar">العربية</option>
+    <option value="it">Italiano</option>
+    <option value="pt">Português</option>
+  </select>
+  <button id="toggleTheme" title="Tema değiştir">☀️</button>
+</header>
+
+<nav>
+  <button class="active" onclick="switchTab('chat')">Ana Menü</button>
+  <button onclick="switchTab('credits')">Credits</button>
+  <button class="clear" onclick="clearMessages()" title="Sohbeti temizle">Temizle</button>
+</nav>
+
+<main>
+  <section id="chat" class="tab-content" style="display:block;">
+    <div class="messages" id="messages"></div>
+    <div class="input-area">
+      <input id="userInput" type="text" placeholder="Bir şey yaz..." />
+      <button class="send" id="sendBtn">Gönder</button>
+    </div>
+  </section>
+
+  <section id="credits" class="tab-content" style="display:none;">
+    <div class="credits">
+      <p><strong>Halopa</strong></p>
+      <p><strong>Umepa</strong></p>
+      <p><strong>Onur</strong></p>
+      <p>SiberBiz AI © 2025</p>
+    </div>
+  </section>
+</main>
+
+<script>
+const apiKey = "Bearer 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";
+
+// Kullanıcı adı işlemleri
+let username = localStorage.getItem("username") || null;
+if (!username) {
+  username = prompt("İsminizi giriniz:")?.trim() || "Kullanıcı";
+  localStorage.setItem("username", username);
+}
+function updateUsername() {
+  const yeniIsim = prompt("Yeni isminizi girin:", username);
+  if (yeniIsim && yeniIsim.trim() !== "") {
+    username = yeniIsim.trim();
+    localStorage.setItem("username", username);
+    addMessage(`${translations[currentLang].usernameUpdated}: ${username}`, "bot");
+  }
+}
+
+const messages = document.getElementById("messages");
+const userInput = document.getElementById("userInput");
+const sendBtn = document.getElementById("sendBtn");
+
+// Dil seçimi
+const translations = {
+  tr: {
+    welcome: "Merhaba! Yazı ya da görsel isteğinde bulunabilirsin.",
+    usernameUpdated: "İsmin güncellendi",
+    enterName: "İsminizi giriniz",
+    clearConfirm: "Sohbeti temizlemek istediğinize emin misiniz?",
+    send: "Gönder",
+    renameCommand: "isim deisme"
+  },
+  en: {
+    welcome: "Hello! You can request text or image.",
+    usernameUpdated: "Name updated",
+    enterName: "Enter your name",
+    clearConfirm: "Are you sure you want to clear the chat?",
+    send: "Send",
+    renameCommand: "change name"
+  },
+  // Diğer diller eklenebilir...
+};
+let currentLang = localStorage.getItem("lang") || "tr";
+document.getElementById("languageSelector").value = currentLang;
+
+function applyTranslations() {
+  sendBtn.textContent = translations[currentLang].send;
+  userInput.placeholder = translations[currentLang].welcome;
+}
+
+document.getElementById("languageSelector").addEventListener("change", (e) => {
+  currentLang = e.target.value;
+  localStorage.setItem("lang", currentLang);
+  applyTranslations();
+});
+
+applyTranslations();
+
+function switchTab(tab) {
+  document.querySelectorAll("nav button").forEach(btn => btn.classList.remove("active"));
+  document.querySelectorAll(".tab-content").forEach(sec => sec.style.display = "none");
+  document.querySelector(`nav button[onclick="switchTab('${tab}')"]`).classList.add("active");
+  document.getElementById(tab).style.display = "block";
+}
+
+function formatTimestamp(date) {
+  return date.toLocaleTimeString(currentLang, { hour: "2-digit", minute: "2-digit" });
+}
 
 function addMessage(text, sender) {
-  const div = document.createElement('div');
-  div.classList.add('message', sender);
-  div.textContent = text;
+  const div = document.createElement("div");
+  div.className = `message ${sender}`;
+  div.textContent = sender === "user" ? `${username}: ${text}` : text;
+  const timeSpan = document.createElement("span");
+  timeSpan.className = "timestamp";
+  timeSpan.textContent = formatTimestamp(new Date());
+  div.appendChild(timeSpan);
   messages.appendChild(div);
-  messages.scrollTop = messages.scrollHeight;
+  messages.scrollTop = messages.scrollHeight; // otomatik kaydırma
+  saveChatToStorage();
 }
 
 function addImage(url) {
-  const img = document.createElement('img');
+  const container = document.createElement("div");
+  container.className = "message bot";
+  const img = document.createElement("img");
   img.src = url;
-  img.classList.add('generated');
-  messages.appendChild(img);
-  messages.scrollTop = messages.scrollHeight;
+  img.className = "generated";
+  img.alt = "Generated image";
+  const timeSpan = document.createElement("span");
+  timeSpan.className = "timestamp";
+  timeSpan.textContent = formatTimestamp(new Date());
+  container.appendChild(img);
+  container.appendChild(timeSpan);
+  messages.appendChild(container);
+  messages.scrollTop = messages.scrollHeight; // otomatik kaydırma
+  saveChatToStorage();
 }
 
+function saveChatToStorage() {
+  localStorage.setItem("chatMessages", messages.innerHTML);
+}
+
+function loadChatFromStorage() {
+  const saved = localStorage.getItem("chatMessages");
+  if (saved) {
+    messages.innerHTML = saved;
+  } else {
+    addMessage(translations[currentLang].welcome, "bot");
+  }
+}
+
+function clearMessages() {
+  if (confirm(translations[currentLang].clearConfirm)) {
+    messages.innerHTML = "";
+    localStorage.removeItem("chatMessages");
+    addMessage(translations[currentLang].welcome, "bot");
+  }
+}
+
+function addLoadingMessage() {
+  const loading = document.createElement("div");
+  loading.className = "message bot";
+  loading.textContent = "Yükleniyor...";
+  messages.appendChild(loading);
+  messages.scrollTop = messages.scrollHeight;
+  return loading;
+}
+
+// Kullanıcı mesajını işleme ve özel "isim deisme" komutunu algılama:
+async function handleUserInput() {
+  const input = userInput.value.trim();
+  if (!input) return;
+  
+  addMessage(input, "user");
+  userInput.value = "";
+  
+  // Burada isim değiştirme komutu algılanıyor
+  // Türkçede "isim deisme" veya İngilizce "change name"
+  if (input.toLowerCase().startsWith(translations[currentLang].renameCommand)) {
+    updateUsername();
+    return;
+  }
+  
+  // Basit kontrol: eğer "resim" kelimesi varsa, görsel üret
+  if (input.toLowerCase().includes("resim") || input.toLowerCase().includes("image")) {
+    const prompt = input.replace(/(resim|image)/gi, "").trim();
+    if (!prompt) {
+      addMessage("Lütfen bir görsel açıklaması girin.", "bot");
+      return;
+    }
+    const loading = addLoadingMessage();
+    try {
+      const imageUrl = await generateImage(prompt);
+      messages.removeChild(loading);
+      addImage(imageUrl);
+    } catch (e) {
+      messages.removeChild(loading);
+      addMessage("Görsel oluşturulurken hata oluştu.", "bot");
+    }
+  } else {
+    // Metin yanıtı için API çağrısı
+    const loading = addLoadingMessage();
+    try {
+      const response = await generateTextResponse(input);
+      messages.removeChild(loading);
+      addMessage(response, "bot");
+    } catch (e) {
+      messages.removeChild(loading);
+      addMessage("Yanıt alınırken hata oluştu.", "bot");
+    }
+  }
+}
+
+// OpenAI API çağrısı: metin oluşturma
+async function generateTextResponse(prompt) {
+  const res = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": apiKey,
+    },
+    body: JSON.stringify({
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 150,
+      temperature: 0.7,
+    }),
+  });
+  const data = await res.json();
+  if (data.choices && data.choices.length > 0) {
+    return data.choices[0].message.content.trim();
+  }
+  throw new Error("No response");
+}
+
+// OpenAI API çağrısı: görsel oluşturma
 async function generateImage(prompt) {
   const res = await fetch("https://api.openai.com/v1/images/generations", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": apiKey
+      "Authorization": apiKey,
     },
     body: JSON.stringify({
       model: "dall-e-3",
       prompt: prompt,
       n: 1,
-      size: "512x512"
-    })
+      size: "512x512",
+    }),
   });
   const data = await res.json();
-  if (!data.data || !data.data[0] || !data.data[0].url) {
-    console.error("Görsel API yanıtı:", data);
-    throw new Error("Görsel oluşturulamadı.");
+  if (data.data && data.data.length > 0) {
+    return data.data[0].url;
   }
-  return data.data[0].url;
+  throw new Error("No image URL");
 }
 
-async function sendToOpenAI(prompt) {
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": apiKey
-    },
-    body: JSON.stringify({
-      model: "gpt-4o",
-      messages: [{role: "user", content: prompt}]
-    })
-  });
-  const data = await response.json();
-  if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-    console.error("OpenAI yanıtı:", data);
-    throw new Error("API'den geçerli yanıt alınamadı.");
-  }
-  return data.choices[0].message.content;
-}
-
-sendBtn.addEventListener('click', async () => {
-  const text = userInput.value.trim();
-  if (!text) return;
-  addMessage(text, "user");
-  userInput.value = "";
-
-  const loading = document.createElement("div");
-  loading.classList.add("message", "bot");
-  loading.textContent = "Yükleniyor...";
-  messages.appendChild(loading);
-
-  try {
-    if (text.toLowerCase().includes("resim") || text.toLowerCase().includes("çiz")) {
-      const imageURL = await generateImage(text);
-      messages.removeChild(loading);
-      addMessage("İşte oluşturduğum görsel:", "bot");
-      addImage(imageURL);
-    } else {
-      const reply = await sendToOpenAI(text);
-      messages.removeChild(loading);
-      addMessage(reply, "bot");
-    }
-  } catch (e) {
-    messages.removeChild(loading);
-    addMessage("Hata oluştu: " + e.message, "bot");
-  }
-});
-
+sendBtn.addEventListener("click", handleUserInput);
 userInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") sendBtn.click();
+  if (e.key === "Enter") {
+    handleUserInput();
+  }
 });
+
+document.getElementById("toggleTheme").addEventListener("click", () => {
+  document.body.classList.toggle("light");
+  const isLight = document.body.classList.contains("light");
+  document.getElementById("toggleTheme").textContent = isLight ? "🌙" : "☀️";
+});
+
+loadChatFromStorage();
+
 </script>
+
+</body>
+</html>
