@@ -1,0 +1,1904 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>OriginOS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100;300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #353535;
+            user-select: none;
+            margin-bottom: 60px;
+            scale: 1;
+            touch-action: none;
+        }
+
+        .phone {
+            width: 330px;
+            height: 700px;
+            border: 3px solid #030303;
+            border-radius: 53px;
+            background: #000000;
+            position: relative;
+            overflow: hidden;
+            z-index: 46;
+            transform: scale(0.9);
+            touch-action: auto;
+        }
+        .area-thanh {
+            position: absolute;
+            height: 750px;
+            background: transparent;
+            transform: scale(0.9);
+            touch-action: none;
+            z-index: 47;
+        }
+
+        .wallpaper {
+            width: 100%;
+            height: 100%;
+            background: url("https://raw.githubusercontent.com/quandz24-ui/one-ui-7/refs/heads/main/462489103_1400206661384168_7007140902614083639_n.jpg") no-repeat center center fixed;
+            background-size: 100%;
+            scale: 100%;
+            transition: all 0.6s cubic-bezier(0.23, 0.55, 0.54, 0.97);
+            border-radius: 50px;
+        }
+
+        .wallpaper.open {
+            scale: 110%;
+            filter: blur(5px);
+        }
+        .wallpaper.lock {
+            height: 50%;
+            scale: 40%;
+            filter: blur(0px);
+            border-radius: 0px;
+        }
+        
+
+        .circle {
+            width: 30px;
+            height: 30px;
+            background-color: #474747;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transform: translateY(40%) translateX(50%);
+            font-size: 17px;
+            font-weight: bold;
+            font-family: "Atkinson Hyperlegible", sans-serif;
+            text-align: center;
+        }
+
+        .left-text {
+            position: absolute;
+            flex-grow: 1;
+            display: flex;
+            justify-content: none;
+            font-size: 19px;
+            top: 35%;
+            left: 15px;
+            transform: translateY(-50%);
+            z-index: 4884;
+            font-family: 'Noto sans', sans-serif;
+        }
+
+        .left-text-small {
+            position: absolute;
+            flex-grow: 1;
+            display: flex;
+            justify-content: none;
+            font-size: 11px;
+            top: 70%;
+            left: 15px;
+            transform: translateY(-50%);
+            z-index: 4884;
+            color: #a2a2a2;
+            font-family: 'Noto sans', sans-serif;
+        }
+
+        .box13,
+        .box12,
+        .box11,
+        .box10,
+        .box9,
+        .box8,
+        .box7,
+        .box6,
+        .box5,
+        .box4,
+        .box3,
+        .box2,
+        .box1 {
+            position: absolute;
+            overflow: hidden;
+            border-radius: 20px;
+            width: 60px;
+            bottom: 35px;
+            height: 60px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: default;
+            transform: translateX(0%) translateY(0%) scale(1);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 12;
+        }
+
+        .box4.lock {
+            opacity: 0.2;
+            transform: translateX(40px) translateY(250px) scale(1.4);
+        }
+        .box3.lock {
+            opacity: 0.2;
+            transform: translateX(13px) translateY(250px) scale(1.4);
+        }
+        .box2.lock{
+            opacity: 0.2;
+            transform: translateX(-13px) translateY(250px) scale(1.4);
+        }
+        .box1.lock {
+            opacity: 0.2;
+            transform: translateX(-40px) translateY(250px) scale(1.4);
+        }
+        .box5.lock {
+            opacity: 0.2;
+            transition: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateX(120px) translateY(200px) scale(1.3);
+        }
+        .box6.lock {
+            opacity: 0.2;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateX(40px) translateY(170px) scale(1.3);
+        }
+        .box7.lock{
+            opacity: 0.2;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateX(-40px) translateY(170px) scale(1.3);
+        }
+        .box8.lock {
+            opacity: 0.2;
+            transition: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateX(-120px) translateY(200px) scale(1.3);
+        }
+        .box9.lock {
+            opacity: 0.2;
+            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateX(-70px) translateY(20px) scale(1.7);
+        }
+        .box10.lock{
+            opacity: 0.2;
+            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateX(70px) translateY(20px) scale(1.7);
+        }
+        .box11.lock {
+            opacity: 0.2;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateX(0px) translateY(-200px) scale(1.4);
+        }
+
+        .box1,
+        .box9,
+        .box11,
+        .box8 {
+            left: 10%;
+        }
+        .box2,
+        .box7 {
+            left: 30.5%;
+        }
+        .box3,
+        .box10,
+        .box6{
+            left: 51.3%;
+        }
+        .box5,
+        .box4 {
+            left: 71.7%;
+        }
+        .box1 {
+            background-color: #3e4043;
+        }
+        .box2 {
+            background-color: rgb(255, 196, 0);
+        }
+        .box3 {
+            background-color: rgba(235, 68, 96, 1);
+        }
+        .box4 {
+            background-color: #eaeaea;
+        }
+        .box5 {
+            background-color: #fdfdfd;
+            bottom: 150px;
+        }
+        .box6 {
+            background-color: #bbdefc;
+            bottom: 150px;
+        }
+        .box7 {
+            background-color: #fefefe;
+            bottom: 150px;
+        }
+        .box8 {
+            background-color: #00cd88;
+            bottom: 150px;
+        }
+        .box9{
+            background-color: #fefdfc;
+            width: 129px;
+            bottom: 220px;
+        }
+        .box10{
+            background-color: #fefdfd;
+            width: 129px;
+            bottom: 220px;
+        }
+        .box11{
+            position: relative;
+            background-color: #fefdfd00;
+            width: 260px;
+            height: 135px;
+            top: 70px;
+        }
+
+
+        
+        .box11.open {
+            width: 330px;
+            height: 701px;
+            top: 0;
+            left: 0%;
+            border-radius: 50px;
+            transform: scale(1.074);
+        }
+        .box5.open,
+        .box10.open,
+        .box9.open, 
+        .box8.open,
+        .box7.open,
+        .box6.open,
+        .box1.open,
+        .box2.open,
+        .box3.open,
+        .box4.open {
+            width: 330px;
+            height: 701px;
+            bottom: 0;
+            left: 0%;
+            border-radius: 50px;
+            transform: scale(1.074);
+        }
+
+        .box11::before,
+        .box10::before,
+        .box9::before,
+        .box8::before,
+        .box7::before,
+        .box6::before,
+        .box5::before,
+        .box2::before,
+        .box3::before,
+        .box4::before,
+        .box1::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            transition: all 0.3s ease;
+            z-index: 0;
+            border-radius: 20px;
+            opacity: 1;
+        }
+
+        .box1::before {
+            background: url("https://raw.githubusercontent.com/quandz24-ui/one-ui-7/refs/heads/main/system_calculator.png") no-repeat center/cover;
+            background-size: 115%;
+        }
+
+        .box2::before {
+            background: url("https://raw.githubusercontent.com/quandz24-ui/one-ui-7/refs/heads/main/system_filemanager.png") no-repeat center/cover;
+            background-size: 115%;
+        }
+
+        .box3::before {
+            background: url("https://raw.githubusercontent.com/quandz24-ui/one-ui-7/refs/heads/main/system_music.png") no-repeat center/cover;
+            background-size: 115%;
+        }
+
+        .box4::before {
+            background: url("https://raw.githubusercontent.com/quandz24-ui/one-ui-7/refs/heads/main/system_settings.png") no-repeat center/cover;
+            background-size: 115%;
+        }
+
+        .box5::before {
+            background: url("https://raw.githubusercontent.com/quandz24-ui/one-ui-7/refs/heads/main/system_messages.png") no-repeat center/cover;
+            background-size: 115%;
+        }
+
+        .box6::before {
+            background: url("https://raw.githubusercontent.com/quandz24-ui/one-ui-7/refs/heads/main/system_photos.png") no-repeat center/cover;
+            background-size: 115%;
+        }
+
+        .box7::before {
+            background: url("https://raw.githubusercontent.com/quandz24-ui/one-ui-7/refs/heads/main/system_calendar.png") no-repeat center/cover;
+            background-size: 115%;
+        }
+
+        .box8::before {
+            background: url("https://raw.githubusercontent.com/quandz24-ui/one-ui-7/refs/heads/main/system_dialer.png") no-repeat center/cover;
+            background-size: 115%;
+        }
+        .box9::before {
+            background: url("https://raw.githubusercontent.com/quandz24-ui/one-ui-7/refs/heads/main/system_clock.png") no-repeat center/cover;
+            background-size: 53%;
+        }
+        .box10::before {
+            background: url("https://raw.githubusercontent.com/quandz24-ui/one-ui-7/refs/heads/main/system_compass.png") no-repeat center/cover;
+            background-size: 53%;
+        }
+        .box11::before {
+            background: #ffffff00;
+            background-size: 53%;
+        }
+
+        .box11.hien::before,
+        .box10.hien::before,
+        .box9.hien::before,
+        .box8.hien::before,
+        .box7.hien::before,
+        .box6.hien::before,
+        .box5.hien::before,
+        .box4.hien::before,
+        .box3.hien::before,
+        .box2.hien::before,
+        .box1.hien::before {
+            opacity: 1;
+        }
+
+        .clicke11,
+        .clicke10,
+        .clicke9,
+        .clicke8,
+        .clicke7,
+        .clicke6,
+        .clicke5,
+        .clicke1,
+        .clicke2,
+        .clicke3,
+        .clicke4 {
+            position: absolute;
+            background-color: #009e5400;
+            height: 60px;
+            width: 60px;
+            font-size: 24px;
+            font-weight: bold;
+            color: transparent;
+            cursor: pointer;
+            z-index: 345;
+            outline: none;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .clicke1 {
+            bottom: 35px;
+            left: 10%;
+            height: 80px;
+        }
+
+        .clicke2 {
+            bottom: 35px;
+            left: 30.5%;
+            height: 80px;
+        }
+
+        .clicke3 {
+            bottom: 35px;
+            right: 30.5%;
+            height: 80px;
+        }
+
+        .clicke4 {
+            bottom: 35px;
+            right: 10%;
+            height: 80px;
+        }
+
+        .clicke5 {
+            bottom: 150px;
+            right: 10%;
+        }
+
+        .clicke6 {
+            bottom: 150px;
+            right: 30.5%;
+        }
+
+        .clicke7 {
+            bottom: 150px;
+            left: 30.5%;
+        }
+
+        .clicke8 {
+            bottom: 150px;
+            left: 10%;
+        }
+        .clicke9 {
+            bottom: 220px;
+            width: 129px;
+            left: 10%;
+        }
+        .clicke10 {
+            bottom: 220px;
+            right: 10%;
+            width: 129px;
+        }
+        .clicke11 {
+            top: 70px;
+            left: 10%;
+            height: 135px;
+            width: 260px;
+        }
+
+        .thanh {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 330px;
+            height: 60px;
+            background: #77000000;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            line-height: 40px;
+            user-select: none;
+            cursor: grab;
+            transform: translateX(-50%);
+            z-index: 2020;
+            display: none;
+            touch-action: auto;
+        }
+        .thanh-status {
+            position: absolute;
+            top: 0;
+            right: 50%;
+            transform: translateX(50%);
+            width: 330px;
+            height: 65px;
+            background: #77000000;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            line-height: 40px;
+            user-select: none;
+            cursor: grab;
+            z-index: 2020;
+            display: flex;
+            touch-action: auto;
+        }
+        .thanh-status2 {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 330px;
+            height: 40px;
+            background: #26770000;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            line-height: 40px;
+            user-select: none;
+            cursor: grab;
+            z-index: 2020;
+            display: flex;
+            touch-action: auto;
+        }
+
+        .thanh.open {
+            display: block;
+        }
+
+        .nav {
+            position: fixed;
+            bottom: 4px;
+            left: 50%;
+            width: 30px;
+            height: 1px;
+            opacity: 0;
+            background: #ffffff;
+            border-radius: 20px;
+            text-align: center;
+            user-select: none;
+            cursor: grab;
+            transform: translateX(-50%);
+            z-index: 200;
+            transition: all 0.3s;
+            z-index: 500;
+        }
+
+        .nav.open {
+            width: 130px;
+            height: 6px;
+            opacity: 1;
+        }
+
+        .lp {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            backdrop-filter: blur(0px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .lp.open {
+            opacity: 0;
+        }
+
+        .khayapp {
+            position: absolute;
+            background-color: #ffffff65;
+            border-radius: 30px;
+            width: 287px;
+            bottom: 25px;
+            height: 80px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: default;
+            left: 50%;
+            transform: translateX(-50%) translateY(0%) scale(1);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 4;
+        }
+        .khayapp.lock{
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateX(-50%) translateY(200px) scale(1.5);
+        }
+
+        /* lock */
+
+        .lockscreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 330px;
+            height: 700px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: all 0.3s;
+            background: transparent;
+            scale: 1;
+            opacity: 1;
+            pointer-events: auto; 
+        }
+
+        .lock-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(173, 216, 230, 0);
+            border-radius: 53px;
+        }
+
+        .lock-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            user-select: none;
+            font-weight: 600;
+        }
+
+        .lock-clock {
+            display: fixed;
+            position: absolute;
+            font-size: 100px;
+            line-height: 90px;
+            font-weight: 600;
+            top: 120px;
+            user-select: none;
+            font-weight: bold;
+            font-family: "Abril Fatface", serif;
+            transform: scale(1) translateY(0px);
+            transition: all 0.6s cubic-bezier(0.23, 0.55, 0.54, 0.97);
+        }
+
+        .lock-clock.tat {
+            transform: scale(0.95) translateY(160px);
+        }
+
+        .date-display {
+            position: absolute;
+            flex-grow: 1;
+            display: flex;
+            justify-content: none;
+            font-size: 19px;
+            top: 95px;
+            left: 50%;
+            transform: translateX(-50%) translateY(0px);
+            scale: 1;
+            transform-origin: center;
+            z-index: 4884;
+            font-family: 'Noto sans', sans-serif;
+            transition: all 0.6s cubic-bezier(0.23, 0.55, 0.54, 0.97);
+        }
+
+        .date-display.tat {
+            transform: translateY(165px) translateX(-52%);
+            scale: 0.95;
+        }
+
+        .lock-fingerprint {
+            display: fixed;
+            position: absolute;
+            bottom: 50px;
+            width: 60px;
+            height: 60px;
+            border: 5px solid #ffffff;
+            border-radius: 100px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s;
+        }
+
+        .lock-fingerprint:hover {
+            transform: scale(0.9);
+        }
+
+        .lock-fingerprint.hidden {
+            opacity: 0;
+        }
+
+        .off {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgb(0, 0, 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 300;
+            opacity: 0;
+            transition: all 0.2s ease-out;
+        }
+
+        .off.hien {
+            opacity: 1;
+        }
+
+        .power-button {
+            position: absolute;
+            display: fixed;
+            top: 35%;
+            left: calc(100% - 16px);
+            transform: translateY(0%);
+            width: 10px;
+            height: 80px;
+            background-color: #ff1313;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 633426;
+            pointer-events: auto; 
+        }
+        .power-button.hidden{
+            pointer-events: none; 
+        }
+
+        .app1,
+        .app2,
+        .app3,
+        .app4main,
+        .app4about,
+        .app4,
+        .app5,
+        .app6,
+        .app7,
+        .app8,
+        .app9,
+        .app10,
+        .app11,
+        .app12 {
+            position: absolute;
+            display: flex;
+            background: #eaeaea;
+            width: 90%;
+            width: 330px;
+            height: 701px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: default;
+            left: 50%;
+            transform: translateX(-50%) translateY(-30%) scale(1);
+            transform-origin: center;
+            top: 00px;
+            z-index: 442;
+            transition: all 0.4s;
+            opacity: 0;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: 'Noto sans', sans-serif;
+        }
+
+        .app1.open,
+        .app2.open,
+        .app3.open,
+        .app4.open,
+        .app5.open,
+        .app6.open,
+        .app7.open,
+        .app8.open,
+        .app9.open,
+        .app10.open,
+        .app11.open,
+        .app12.open {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        .khaysetting1,
+        .khaysetting2,
+        .khaysetting {
+            position: absolute;
+            display: fixed;
+            border-radius: 20px;
+            background: #ffffff;
+            background-size: 105%;
+            width: 90%;
+            height: 55px;
+            top: 300px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: default;
+            left: 50%;
+            transform: translateX(-50%) translateY(40px) scale(1);
+            z-index: 443;
+            text-align: center;
+        }
+
+        .khaysetting2 {
+            top: 360px;
+        }
+
+        .khaysetting1 {
+            top: 160px;
+        }
+
+        .click-area {
+            position: absolute;
+            display: fixed;
+            border-radius: 20px;
+            background: #3c03038d;
+            background-size: 105%;
+            width: 90%;
+            height: 55px;
+            top: 160px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: default;
+            left: 50%;
+            transform: translateX(-50%) translateY(40px) scale(1);
+            z-index: 555;
+            text-align: center;
+        }
+
+        .originos {
+            position: absolute;
+            display: fixed;
+            border-radius: 20px;
+            background: url("https://raw.githubusercontent.com/quandz24-ui/one-ui-7/refs/heads/main/OriginOS_setting.jpg") no-repeat center center fixed;
+            background-size: 105%;
+            width: 90%;
+            height: 200px;
+            bottom: 35px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: default;
+            left: 50%;
+            top: 100px;
+            transform: translateX(-50%) translateY(0%) scale(1);
+            z-index: 442;
+        }
+
+        .status-time-widget {
+            position: absolute;
+            flex-grow: 1;
+            display: flex;
+            justify-content: none;
+            top: 50%;
+            left: 47%;
+            transform: translate(-50%, -50%);
+            color: rgb(42, 42, 42);
+            font-size: 100px;
+            z-index: 100;
+            font-family: 'Abril Fatface', sans-serif;
+            font-weight: 600;
+            z-index: 20000;
+            transition: all 0.3s;
+            opacity: 1;
+            scale: 0.9;
+        }
+        .status-time {
+            position: absolute;
+            flex-grow: 1;
+            display: flex;
+            justify-content: none;
+            top: 10px;
+            left: 30px;
+            color: rgb(42, 42, 42);
+            font-size: 17px;
+            z-index: 100;
+            font-family: 'Noto sans', sans-serif;
+            font-weight: 600;
+            z-index: 20000;
+            transition: all 0.3s;
+            opacity: 00;
+            scale: 0.9;
+        }
+        .status-time.hien{
+            opacity: 1;
+        }
+        .status-time.open{
+            color: rgb(255, 255, 255);
+        }
+        .status-battery {
+            position: absolute;
+            top: 15px;
+            right: 30px;
+            width: 33px;
+            height: 18px;
+            border: 2px solid rgb(42, 42, 42);
+            border-radius: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2px;
+            background: rgba(255, 255, 255, 0);
+            box-sizing: border-box;
+            position: absolute;
+            z-index: 100;
+            font-weight: bold;
+            font-family: 'Noto sans', sans-serif;
+            font-size: 80%;
+            color: rgb(42, 42, 42);
+            z-index: 12323;
+            transition: all 0.3s;
+            scale: 0.9;
+        }
+        .battery-small.close{
+            background: rgb(255, 255, 255);
+        }
+        .status-battery.close{
+            border: 2px solid rgb(255, 255, 255);
+            right: 35px;
+        }
+        .battery-small {
+            position: absolute;
+            left: 102%;
+            width: 3px;
+            height: 8px;
+            border-radius: 100px;
+            display: flex;
+            background: rgb(42, 42, 42);
+            transition: all 0.3s;
+        }
+        .battery-small2 {
+            position: absolute;
+            right: 80%;
+            width: 4px;
+            height: 10px;
+            border-radius: 3px;
+            display: flex;
+            background: rgb(255, 0, 0);
+        }
+        .battery-num{
+            z-index: 1;
+            color: rgb(42, 42, 42);
+            transition: all 0.3s;
+        }
+        .battery-num.close{
+            color: rgb(255, 255, 255);
+        }
+        .camera {
+            transform: translateX(-50%);
+            position: absolute;
+            display: fixed;
+            top: 10px;
+            left: 50%;
+            height: 25px;
+            width: 25px;
+            border-radius: 50%;
+            background-color: #000000;
+            z-index: 1231673;
+        }
+        .lp2 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.295);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 199;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .lp2.open {
+            opacity: 1;
+        }
+        .left-text-tb {
+            position: absolute;
+            flex-grow: 1;
+            display: flex;
+            justify-content: none;
+            font-size: 18px;
+            top: 150px;
+            left: 35px;
+            transform: translateY(0%);
+            z-index: 20000;
+            font-weight: 400;
+            color: #ffffff;
+            font-family: 'Noto sans', sans-serif;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.23, 0.55, 0.54, 0.97);
+        }
+        .left-text-tb.open{
+            font-size: 20px;
+            top: 120px;
+            left: 35px;
+            opacity: 1;
+        }
+        .date-display2 {
+            position: absolute;
+            flex-grow: 1;
+            display: flex;
+            justify-content: none;
+            font-size: 19px;
+            top: 95px;
+            left: 0;
+            transform: translateX(0%) translateY(0px);
+            scale: 1;
+            transform-origin: center;
+            z-index: 4884;
+            font-family: 'Noto sans', sans-serif;
+            transition: all 0.3s ease-out;
+        }
+        .allApp {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background: none;
+            transform: scale(1);
+            transition: all 0.6s cubic-bezier(.07,1.33,1,1);
+            z-index: 3;
+            scale: 1;
+        }
+
+        .allApp.open {
+            transform: scale(0.93);
+        }
+
+        .allApp.lock {
+            transition: all 1s cubic-bezier(.07,1.33,1,1);
+            transform: scale(2.3) rotateX(10deg);
+            opacity: 0;
+        }
+            /* Màn hình loading */
+    #loading-screen {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-45%);
+      width: 100vw;
+      height: 100vh;
+      background: #353535;
+      z-index: 999999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.3s ease;
+      pointer-events: auto;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #ccc;
+      border-top-color: #007bff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 12px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    p {
+      height: 0px;
+      font-size: 15px;
+      font-weight: 900;
+      font-family: 'Noto sans', sans-serif;
+      color: #ffffff;
+    }
+    </style>
+</head>
+
+<body>
+
+    <div id="loading-screen">
+    <div class="spinner"></div>
+    <p>Loading OriginOS...</p>
+    <p>by: Quandz24</p>
+    <p>tiktok: @sungsamtech - @._naq.</p>
+  </div>
+
+
+    <div class="area-thanh">
+        <div class="thanh" id="thanh"></div>
+        <div class="thanh-status" id="thanh-status"></div>
+    </div>
+    <div class="phone">
+        <div class="lp2" id="lp2"></div>
+        <div class="left-text-tb" id="left-text-tb">notification center</div>
+        
+        <div class="thanh-status2" id="thanh-status2"></div> 
+        <div class="status-battery">
+            <div class="battery-small"></div>
+            <div class="battery-small2"></div>
+            <div class="battery-num" id="batery-num">20</div>
+        </div>
+        <div class="camera"></div>
+        <div class="status-time" id="lockclock2"><div class="date-display2" id="dateText2"></div></div>
+        <div class="off" id="off"></div>
+        <div class="allApp" id="allApp">
+            <div class="khayapp"></div>
+            <div class="box1" id="box1">
+                <div class="nav" style="background: #1f1f1f"></div>
+                <div class="app1" id="app1">soon</div>
+            </div>
+            <div class="box2" id="box2">
+                <div class="nav" style="background: #1f1f1f"></div>
+                <div class="app2" id="app2">none</div>
+            </div>
+            <div class="box3" id="box3">
+                <div class="nav" style="background: #1f1f1f"></div>
+                <div class="app3" id="app3">soon</div>
+            </div>
+            <div class="box4" id="box4">
+                <div class="nav" style="background: #1f1f1f"></div>
+                <!--<div class="app4main" id="app4main">
+                    <div class="left-text" style="left:50%; top: 80px; font-size: 30px; transform: translateX(-50%);">Setting</div>
+                    <div class="khaysetting1" >
+                        <div class="circle">i</div>
+                        <div class="left-text" style="left: 60px;">About</div>
+                        <div class="left-text-small" style="left: 60px;">OS	&middot; information</div>
+                    </div>
+                    <div class="click-area" id="khaysetting1"></div>
+                </div>-->>
+                <div class="app4" id="app4">
+                    <div class="khaysetting">
+                        <div class="left-text">develop</div>
+                        <div class="left-text-small">TikTok: @sungsamtech - galaxyA15&#10084;.</div>
+                    </div>
+                    <div class="khaysetting2">
+                        <div class="left-text">Version</div>
+                        <div class="left-text-small">&nbsp;V1.1.00</div>
+                    </div>
+                    <div class="originos"></div>
+                </div>
+            </div>
+            <div class="box5" id="box5">
+                <div class="nav" style="background: #1f1f1f"></div>
+                <div class="app5" id="app5">none</div>
+            </div>
+            <div class="box6" id="box6">
+                <div class="nav" style="background: #1f1f1f"></div>
+                <div class="app6" id="app6">none</div>
+            </div>
+            <div class="box7" id="box7">
+                <div class="nav" style="background: #1f1f1f"></div>
+                <div class="app7" id="app7">none</div>
+            </div>
+            <div class="box8" id="box8">
+                <div class="nav" style="background: #1f1f1f"></div>
+                <div class="app8" id="app8">none</div>
+            </div>
+            <div class="box9" id="box9">
+                <div class="nav" style="background: #1f1f1f"></div>
+                <div class="app9" id="app9">none</div>
+            </div>
+            <div class="box10" id="box10">
+                <div class="nav" style="background: #1f1f1f"></div>
+                <div class="app10" id="app10">none</div>
+            </div>
+            <div class="box11" id="box11">
+                <div class="status-time-widget" id="lockclock3">
+                    <div class="date-display" id="dateText3"></div>
+                </div>
+                <div class="nav" style="background: #1f1f1f"></div>
+                <div class="app11" id="app11"></div>
+            </div>
+        </div>
+        <div class="wallpaper">
+        </div>
+        <div class="lp" id="lp"></div>
+
+        <div class="clicke1" id="clickableBox1"></div>
+        <div class="clicke2" id="clickableBox2"></div>
+        <div class="clicke3" id="clickableBox3"></div>
+        <div class="clicke4" id="clickableBox4"></div>
+        <div class="clicke5" id="clickableBox5"></div>
+        <div class="clicke6" id="clickableBox6"></div>
+        <div class="clicke7" id="clickableBox7"></div>
+        <div class="clicke8" id="clickableBox8"></div>
+        <div class="clicke9" id="clickableBox9"></div>
+        <div class="clicke10" id="clickableBox10"></div>
+        <div class="clicke11" id="clickableBox11"></div>
+        <div class="clicke12" id="clickableBox12"></div>
+        <div class="clicke13" id="clickableBox13"></div>
+
+
+
+
+
+        <!-- Màn hình khóa -->
+        <div class="lockscreen" id="lockscreen">
+            <div class="lock-content">
+                <div class="lock-clock" id="lockclock"></div>
+                <div class="date-display" id="dateText"></div>
+            </div>
+            <div class="lock-fingerprint" id="unlock-btn"></div>
+        </div>
+    </div>
+    <div class="power-button" title="power-button"></div>
+    </div>
+
+    <script>
+        const dateElement = document.getElementById('dateText');
+        const dateElement2 = document.getElementById('dateText2');
+
+        const now = new Date();
+        const options = { weekday: 'short', month: 'short', day: 'numeric' };
+        const formatted = now.toLocaleDateString('en-US', options);
+
+        dateElement.textContent = formatted;
+        dateElement2.textContent = formatted;
+        document.getElementById("dateText3").textContent = formatted;
+
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, "0");
+            const minutes = String(now.getMinutes()).padStart(2, "0");
+            document.getElementById(
+                "lockclock"
+            ).textContent = `${hours}:${minutes}`;
+            document.getElementById(
+                "lockclock2"
+            ).textContent = `${hours}:${minutes}`;
+            document.getElementById(
+                "lockclock3"
+            ).textContent = `${hours}:${minutes}`;
+        }
+          
+        updateTime();
+        setInterval(updateTime, 10000);
+
+
+        const boxes = {
+            box1: document.getElementById("box1"),
+            box2: document.getElementById("box2"),
+            box3: document.getElementById("box3"),
+            box4: document.getElementById("box4"),
+            box5: document.getElementById("box5"),
+            box6: document.getElementById("box6"),
+            box7: document.getElementById("box7"),
+            box8: document.getElementById("box8"),
+            box9: document.getElementById("box9"),
+            box10: document.getElementById("box10"),
+            box11: document.getElementById("box11"),
+            box12: document.getElementById("box12"),
+            box13: document.getElementById("box13"),
+        };
+        boxes[`box1`].classList.add("lock");
+        boxes[`box2`].classList.add("lock");
+        boxes[`box3`].classList.add("lock");
+        boxes[`box4`].classList.add("lock");
+        boxes[`box5`].classList.add("lock");
+        boxes[`box6`].classList.add("lock");
+        boxes[`box7`].classList.add("lock");
+        boxes[`box8`].classList.add("lock");
+        boxes[`box9`].classList.add("lock");
+        boxes[`box10`].classList.add("lock");
+        boxes[`box11`].classList.add("lock");
+        document.querySelector(".khayapp").classList.add("lock");
+        const appopen = {
+            box1: document.getElementById("app1"),
+            box2: document.getElementById("app2"),
+            box3: document.getElementById("app3"),
+            box4: document.getElementById("app4"),
+            box5: document.getElementById("app5"),
+            box6: document.getElementById("app6"),
+            box7: document.getElementById("app7"),
+            box8: document.getElementById("app8"),
+            box9: document.getElementById("app9"),
+            box10: document.getElementById("app10"),
+            box11: document.getElementById("app11"),
+            box12: document.getElementById("app12"),
+            box13: document.getElementById("app13"),
+        };
+
+        const clickables = {
+            box1: document.getElementById("clickableBox1"),
+            box2: document.getElementById("clickableBox2"),
+            box3: document.getElementById("clickableBox3"),
+            box4: document.getElementById("clickableBox4"),
+            box5: document.getElementById("clickableBox5"),
+            box6: document.getElementById("clickableBox6"),
+            box7: document.getElementById("clickableBox7"),
+            box8: document.getElementById("clickableBox8"),
+            box9: document.getElementById("clickableBox9"),
+            box10: document.getElementById("clickableBox10"),
+            box11: document.getElementById("clickableBox11"),
+            box12: document.getElementById("clickableBox12"),
+            box13: document.getElementById("clickableBox13"),
+        };
+
+        const thanh = document.getElementById("thanh");
+        const WallPaper = document.querySelector(".wallpaper");
+        const lp = document.querySelector(".lp");
+        const allApp = document.getElementById("allApp");
+
+        let currentOpeningBtn = null;
+        let nav = null;
+        let isMo = false;
+        let autoHideClickablesTimer = null;
+        let closing = false;
+        let app = null;
+
+        function hideAllClickables() {
+            Object.values(clickables).forEach((el) => {
+                el.style.display = "none";
+            });
+        }
+
+        function openPopupFromCurrentButton() {
+            if (!currentOpeningBtn) return;
+            if (app) app.classList.add("open");
+            if (scale < 1) currentOpeningBtn.style.transition = "all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+            if (scale < 0.7) currentOpeningBtn.style.transition = "all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+            WallPaper.classList.add("open");
+
+            currentOpeningBtn.classList.add("open");
+            currentOpeningBtn.classList.add("hien");
+            currentOpeningBtn.style.zIndex = "320";
+
+            setTimeout(() => {
+                currentOpeningBtn.style.transform = `translateX(0%) translateY(0%) scale(1.074)`;
+            }, 50);
+
+            thanh.classList.add("open");
+            lp.classList.add("open");
+            allApp.style.transition = "all 0.5s cubic-bezier(0.23, 0.55, 0.54, 0.97)";
+            allApp.classList.add("open");
+
+            const boxId = Object.keys(boxes).find(
+                (key) => boxes[key] === currentOpeningBtn
+            );
+            if (boxId) clickables[boxId].style.display = "none";
+
+            nav = currentOpeningBtn.querySelector(".nav");
+            if (nav) nav.classList.add("open");
+
+            isMo = true;
+        }
+
+        const scale = 1;
+
+        function closePopup() {
+            if (!currentOpeningBtn) return;
+            app.classList.remove("open");
+            currentOpeningBtn.style.transition = "all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+            clearTimeout(autoHideClickablesTimer);
+            closing = true;
+            setTimeout(() => {
+                closing = false;
+            }, 300);
+            currentOpeningBtn.classList.remove("open");
+            setTimeout(() => {
+                currentOpeningBtn.style.transform = `translateX(0%) translateY(0%) scale(1)`;
+                currentOpeningBtn.classList.remove("hien");
+                currentOpeningBtn = null;
+                scale = 1;
+            }, 50);
+            WallPaper.classList.remove("open");
+            lp.classList.remove("open");
+            currentOpeningBtn.style.zIndex = "5";
+
+            thanh.style.transform = "translateX(-50%)";
+            allApp.style.transition = "all 0.5s cubic-bezier(0.23, 0.55, 0.54, 0.97)";
+            allApp.classList.remove("open");
+
+            if (nav) nav.classList.remove("open");
+            isMo = false;
+
+            Object.values(clickables).forEach((el) => {
+                el.style.display = "block";
+            });
+        }
+
+        function updateTransform(y, x) {
+            if (y < 0) y = 0;
+            if (y > 200) y = 200;
+
+            const easedY = Math.sqrt(y);
+            const maxEasedY = Math.sqrt(550);
+            const ratio = easedY / maxEasedY;
+            const displayY = ratio * 170;
+            if (displayY > 100) displayY = 100;
+            const scale = 1 - y / 300 + 0.074;
+
+            currentOpeningBtn.style.transition = "all 0.1s";
+            currentOpeningBtn.style.transform = `translateX(${x}px) translateY(${-displayY}px) scale(${scale})`;
+
+            thanh.style.transition = "none";
+            thanh.style.transform = `translateX(calc(-50% + ${x}px)) translateY(${-y}px)`;
+        }
+
+        function resetpop() {
+            thanh.classList.add("open");
+            currentOpeningBtn.style.transition = "all 0.3s";
+            currentOpeningBtn.style.transform = `translateX(0%) translateY(0%) scale(1.074)`;
+            thanh.style.transform = `translateX(-50%) translateY(0%) scale(1)`;
+        }
+
+        let startY = 0;
+        let startX = 0;
+        let deltaY = 0;
+        let deltaX = 0;
+        let dragging = false;
+
+        thanh.addEventListener("touchstart", (e) => {
+            if (!isMo) return;
+            startY = e.touches[0].clientY;
+            startX = e.touches[0].clientX;
+        });
+
+        thanh.addEventListener("touchmove", (e) => {
+            e.preventDefault();
+            if (!isMo) return;
+            deltaY = startY - e.touches[0].clientY;
+            deltaX = e.touches[0].clientX - startX;
+            updateTransform(deltaY, deltaX);
+            thanh.classList.remove("open");
+        }, {
+            passive: false
+        }
+        );
+
+        thanh.addEventListener("touchend", () => {
+            if (deltaY > 40) closePopup();
+            else resetpop();
+            deltaY = 0;
+            deltaX = 0;
+        });
+
+        thanh.addEventListener("mousedown", (e) => {
+            deltaY = 0;
+            deltaX = 0;
+            startY = 0;
+            startX = 0;
+
+            if (!isMo) return;
+            dragging = true;
+            startY = e.clientY;
+            startX = e.clientX;
+        });
+
+        window.addEventListener("mousemove", (e) => {
+            if (!dragging || !isMo) return;
+            deltaY = startY - e.clientY;
+            deltaX = e.clientX - startX;
+            updateTransform(deltaY, deltaX);
+            thanh.classList.remove("open");
+        });
+
+        window.addEventListener("mouseup", () => {
+            if (!dragging || !isMo) return;
+            dragging = false;
+            if (deltaY > 40) closePopup();
+            else resetpop();
+        });
+
+        ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"].forEach((num) => {
+            document.getElementById(`clickableBox${num}`).addEventListener("click", () => {
+
+                    clearTimeout(autoHideClickablesTimer);
+
+                    if (currentOpeningBtn) {
+                        Object.values(clickables).forEach((el) => {
+                            el.style.display = "block";
+                        });
+
+                        currentOpeningBtn.style.transition = "all 0.6s cubic-bezier(0.17, 0.84, 0.44, 1)";
+                        currentOpeningBtn.classList.remove("open");
+                        currentOpeningBtn.classList.remove("hien");
+
+                        app.classList.remove("open");
+                        app = appopen[`box${num}`];
+
+                        lp.style.transition = "all 0.15s";
+                        lp.classList.remove("open");
+
+                        if (nav) nav.classList.remove("open");
+
+                        setTimeout(() => {
+                            currentOpeningBtn.style.transform = `scale(1)`;
+                            currentOpeningBtn.style.zIndex = "5";
+
+                            lp.style.transition = "all 0.3s";
+                            WallPaper.classList.remove("open");
+
+                            currentOpeningBtn = boxes[`box${num}`];
+
+                            openPopupFromCurrentButton();
+                            autoHideClickablesTimer = setTimeout(() => {
+                                if (isMo) hideAllClickables();
+                            }, 570);
+                        }, 0);
+                    } else {
+                        currentOpeningBtn = boxes[`box${num}`];
+                        currentOpeningBtn.style.transition = "all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+                        app = appopen[`box${num}`];
+                        openPopupFromCurrentButton();
+                        autoHideClickablesTimer = setTimeout(() => {
+                            if (isMo) hideAllClickables();
+                        }, 400);
+                    }
+                });
+        });
+
+
+        // DOM elements
+        const lockscreen = document.getElementById('lockscreen');
+        const wallpaper = document.querySelector('.wallpaper');
+        const unlockBtn = document.getElementById('unlock-btn');
+        const powerbtn = document.querySelector('.power-button');
+        const off = document.getElementById("off");
+        const fingerprint = document.querySelector(".lock-fingerprint");
+        const lockclock = document.querySelector(".lock-clock");
+        const dateText = document.getElementById("dateText");
+        const clock = document.getElementById("lockclock2");
+        const battery3 = document.querySelector(".battery-num");
+        const battery2 = document.querySelector(".battery-small");
+        const battery1 = document.querySelector(".status-battery");
+
+        let ison = true;
+        let islock = true;
+        allApp.style.transition = "all 0s";
+        allApp.classList.add("lock");
+        hideAllClickables();
+
+        //lock();
+        clock.classList.add("hien");
+
+        function lock() {
+            islock = true;
+            dongnotification()
+
+            lockscreen.style.transition = "all 0.3s";
+            lockscreen.style.opacity = 1;
+            lockscreen.style.pointerEvents = 'auto'; 
+            lockscreen.style.scale = 1;
+
+            //wallpaper.classList.add("open");
+
+            allApp.style.transition = "all 0s";
+            allApp.classList.add("lock");
+
+            hideAllClickables();
+            clock.classList.remove("hien");
+
+            boxes["box1"].style.transform = "translateX(-40px) translateY(250px) scale(1.4)";
+            boxes["box1"].style.opacity = "0.2";
+            boxes["box1"].style.transition = "all 0s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+
+            boxes["box2"].style.transform = "translateX(-13px) translateY(250px) scale(1.4)";
+            boxes["box2"].style.opacity = "0.2";
+            boxes["box2"].style.transition = "all 0s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+
+            boxes["box3"].style.transform = "translateX(13px) translateY(250px) scale(1.4)";
+            boxes["box3"].style.opacity = "0.2";
+            boxes["box3"].style.transition = "all 0s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+
+            boxes["box4"].style.transform = "translateX(40px) translateY(250px) scale(1.4)";
+            boxes["box4"].style.opacity = "0.2";
+            boxes["box4"].style.transition = "all 0s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+
+            boxes["box5"].style.transform = "translateX(120px) translateY(200px) scale(1.3)";
+            boxes["box5"].style.opacity = "0.2";
+            boxes["box5"].style.transition = "all 0s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+
+            boxes["box6"].style.transform = "translateX(40px) translateY(170px) scale(1.3)";
+            boxes["box6"].style.opacity = "0.2";
+            boxes["box6"].style.transition = "all 0s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+
+            boxes["box7"].style.transform = "translateX(-40px) translateY(170px) scale(1.3)";
+            boxes["box7"].style.opacity = "0.2";
+            boxes["box7"].style.transition = "all 0s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+
+            boxes["box8"].style.transform = "translateX(-120px) translateY(200px) scale(1.3)";
+            boxes["box8"].style.opacity = "0.2";
+            boxes["box8"].style.transition = "all 0s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+
+            boxes["box9"].style.transform = "translateX(-70px) translateY(20px) scale(1.7)";
+            boxes["box9"].style.opacity = "0.2";
+            boxes["box9"].style.transition = "all 0s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+
+            boxes["box10"].style.transform = "translateX(70px) translateY(20px) scale(1.7)";
+            boxes["box10"].style.opacity = "0.2";
+            boxes["box10"].style.transition = "all 0s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+
+            boxes["box11"].style.transform = "translateX(0px) translateY(-200px) scale(1.4)";
+            boxes["box11"].style.opacity = "0.2";
+            boxes["box11"].style.transition = "all 0s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+
+        }
+
+        function unlock() {
+            islock = false;
+            ison = true;
+
+            off.classList.remove("hien");
+
+            lockscreen.style.opacity = 0;
+            lockscreen.style.transition = "none";
+            lockscreen.style.scale = 0.9;
+            lockscreen.style.pointerEvents = 'none';
+
+            wallpaper.classList.remove("lock");
+            lockclock.classList.remove("tat");
+            dateText.classList.remove("tat");
+
+            allApp.style.transition = "all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)";
+            allApp.classList.remove("lock");
+            battery2.classList.remove("close");
+            battery1.classList.remove("close");
+            battery3.classList.remove("close");
+            
+            clock.classList.add("hien");
+
+            powerbtn.classList.add("hidden");
+            setTimeout(() => {
+                Object.values(clickables).forEach((el) => {
+                    el.style.display = "flex";
+                });
+                powerbtn.classList.remove("hidden");
+            }, 440);
+            
+            setTimeout(() => {
+            boxes[`box1`].style.transform = "translateX(0px) translateY(0px) scale(1)";
+            boxes[`box1`].style.opacity = "1";
+            boxes[`box1`].style.transition = "all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+
+            boxes[`box2`].style.transform = "translateX(0px) translateY(0px) scale(1)";
+            boxes[`box2`].style.opacity = "1";
+            boxes[`box2`].style.transition = "all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+
+            boxes[`box3`].style.transform = "translateX(0px) translateY(0px) scale(1)";
+            boxes[`box3`].style.opacity = "1";
+            boxes[`box3`].style.transition = "all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+            
+            boxes[`box4`].style.transform = "translateX(0px) translateY(0px) scale(1)";
+            boxes[`box4`].style.opacity = "1";
+            boxes[`box4`].style.transition = "all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+            document.querySelector(".khayapp").classList.remove("lock");
+            }, 120);
+
+            setTimeout(() => {
+            boxes["box5"].style.transform = "translateX(0px) translateY(0px) scale(1)";
+            boxes["box5"].style.opacity = "1";
+            boxes["box5"].style.transition = "all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+            boxes["box8"].style.transform = "translateX(0px) translateY(0px) scale(1)";
+            boxes["box8"].style.opacity = "1";
+            boxes["box8"].style.transition = "all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+            }, 90);
+            
+            setTimeout(() => {
+            
+            boxes["box6"].style.transform = "translateX(0px) translateY(0px) scale(1)";
+            boxes["box6"].style.opacity = "1";
+            boxes["box6"].style.transition = "all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+
+            boxes["box7"].style.transform = "translateX(0px) translateY(0px) scale(1)";
+            boxes["box7"].style.opacity = "1";
+            boxes["box7"].style.transition = "all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+            }, 60);
+
+            
+            setTimeout(() => {
+            
+            boxes["box9"].style.transform = "translateX(0px) translateY(0px) scale(1)";
+            boxes["box9"].style.opacity = "1";
+            boxes["box9"].style.transition = "all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+
+            boxes["box10"].style.transform = "translateX(0px) translateY(0px) scale(1)";
+            boxes["box10"].style.opacity = "1";
+            boxes["box10"].style.transition = "all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+            }, 30);
+            
+            setTimeout(() => {
+            boxes["box11"].style.transform = "translateX(0px) translateY(0px) scale(1)";
+            boxes["box11"].style.opacity = "1";
+            boxes["box11"].style.transition = "all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+            }, 0);
+        }
+
+        unlockBtn.addEventListener('touchend', () => {
+            unlock();
+        });
+        unlockBtn.addEventListener('mouseup', () => {
+            unlock();
+        });
+
+        powerbtn.addEventListener('click', () => {
+            if (ison) {
+                wallpaper.classList.add("lock");
+
+                ison = false;
+                lockclock.classList.add("tat");
+                dateText.classList.add("tat");
+                battery2.classList.add("close");
+                battery1.classList.add("close");
+                battery3.classList.add("close");
+                thanhS1.style.pointerEvents = "none";
+                closePopup_noanim()
+            }
+            else {
+                wallpaper.classList.remove("lock");
+                ison = true;
+                lockclock.classList.remove("tat");
+                dateText.classList.remove("tat");
+                battery2.classList.remove("close");
+                battery1.classList.remove("close");
+                battery3.classList.remove("close");
+                thanhS1.style.pointerEvents = "auto";
+            }
+            lock();
+        });
+
+        lockscreen.addEventListener('click', () => {
+            wallpaper.classList.remove("lock");
+            ison = true;
+            lockclock.classList.remove("tat");
+            dateText.classList.remove("tat");
+            battery2.classList.remove("close");
+            battery1.classList.remove("close");
+            battery3.classList.remove("close");
+            thanhS1.style.pointerEvents = "auto";
+        });
+
+
+        // in setting
+        //const AboutInSetting = document.getElementById("khaysetting1");
+        //const app4 = document.getElementById("app4");
+        //const app4main = document.getElementById("app4main");
+        //
+        //AboutInSetting.addEventListener('click', () => {
+        //app4.classList.add("open");
+        //app4main.classList.add("tat");
+        //});
+
+        // -- nofication --
+        const thanhS1 = document.querySelector(".thanh-status");
+        const thanhS2 = document.querySelector(".thanh-status2");
+        const lp2 = document.querySelector(".lp2");
+        const notificationcenter = document.querySelector(".left-text-tb");
+        
+        let draggingS = false;
+        let isMoS = false
+        let startYS = 0;
+        let startXS = 0;
+        let deltaYS = 0;
+        let deltaXS = 0;
+
+
+        function updateTransformS(y, x) {
+            
+            const y2 = y;
+            if (y2 < -90) y2 = -90;
+            if(y2 > 0) y2 = 0;
+            //if (y < -50) y = -50;
+            if(y > 0) y = 0;
+            
+            const scale = 1 + -y / 60;
+
+            clock.style.transition = "all 0.2s";
+            clock.style.transform = `translateX(calc(${-y}px / 3)) translateY(${-y2}px) scale(${scale})`;
+            lp2.style.transition = "all 0.1s";
+            lp2.style.opacity = `${scale - 1} `;
+            lp2.style.zIndex = 19999;
+
+            thanhS1.style.transition = "none";
+            thanhS1.style.transform = `translateX(50%) translateY(${-y}px)`;
+        }
+
+
+
+        thanhS1.addEventListener("touchstart", (e) => {
+            if(!ison) return;
+
+            isMoS = true;
+            startYS = e.touches[0].clientY;
+            startXS = e.touches[0].clientX;
+            clock.classList.add("hien"); 
+            notificationcenter.style.transform = "translateY(0px)";
+        });
+
+        thanhS1.addEventListener("touchmove", (e) => {
+            e.preventDefault();
+            if (!isMoS) return;
+            deltaYS = startYS - e.touches[0].clientY;
+            deltaXS = e.touches[0].clientX - startXS;
+            updateTransformS(deltaYS, deltaXS);
+        }, {
+            passive: false
+        }
+        );
+
+        thanhS1.addEventListener("touchend", () => {
+            if(deltaYS < -70) monotification();
+            else dongnotification();
+            deltaYS = 0;
+            deltaXS = 0;
+            thanhS1.style.transform = `translateX(50%)`;
+        }); 
+
+        thanhS1.addEventListener("mousedown", (e) => {
+            if(!ison) return;
+
+            deltaYS = 0;
+            deltaXS = 0;
+            startYS = 0; 
+            startXS = 0;
+
+            isMoS = true;
+            draggingS = true;
+
+            startYS = e.clientY;
+            startXS = e.clientX;
+            clock.classList.add("hien"); 
+            notificationcenter.style.transform = "translateY(0px)";
+        });
+
+        window.addEventListener("mousemove", (e) => {
+            if (!draggingS || !isMoS) return;
+            deltaYS = startYS - e.clientY;
+            deltaXS = e.clientX - startXS;
+            updateTransformS(deltaYS, deltaXS);
+        });
+
+        window.addEventListener("mouseup", () => {
+            if (!draggingS || !isMoS) return;
+            draggingS = false;
+            thanhS1.style.transform = `translateX(50%)`;
+            if(deltaYS < -70) monotification();
+            else dongnotification();
+        });
+
+        lp2.addEventListener("click", ()=> {
+            dongnotification();
+        }); 
+        lp2.addEventListener("touchend", ()=> {
+            dongnotification();
+        }); 
+
+        function monotification(){
+            clock.style.transition = "all 0.5s cubic-bezier(0.23, 0.55, 0.54, 0.97)"; 
+            clock.style.transform = `translateX(25px) translateY(50px) scale(calc(1 + 50 / 40))`;
+            lp2.style.transition = "all 0s";
+            notificationcenter.classList.add("open");
+            lp2.style.opacity = `1`;
+            lp2.style.zIndex = 19999;
+            clock.classList.add("open");
+            thanhS1.style.pointerEvents = "none";
+        }
+        function dongnotification(){ 
+            clock.style.transition = "all 0.4s cubic-bezier(0.23, 0.55, 0.54, 0.97)";
+            clock.style.transform = `none`; 
+            lp2.style.transition = "all 0.3s"; 
+            lp2.style.opacity = `0`;
+            lp2.style.zIndex = 199;
+            notificationcenter.style.transform = "translateY(-60px)";
+            notificationcenter.classList.remove("open");
+            clock.classList.remove("open");
+            if(islock) clock.classList.remove("hien");
+            thanhS1.style.pointerEvents = "auto";
+        }
+        function closePopup_noanim() {
+            if (!currentOpeningBtn) return;
+            app.classList.remove("open");
+            currentOpeningBtn.style.transition = "all 0s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+            clearTimeout(autoHideClickablesTimer);
+            closing = true;
+            setTimeout(() => {
+                closing = false;
+            }, 300);
+            currentOpeningBtn.classList.remove("open");
+            setTimeout(() => {
+                currentOpeningBtn.classList.remove("hien");
+                currentOpeningBtn = null;
+                scale = 1;
+            }, 0);
+            WallPaper.classList.remove("open");
+            lp.classList.remove("open");
+            currentOpeningBtn.style.zIndex = "5";
+
+            thanh.style.transform = "translateX(-50%)";
+            allApp.style.transition = "all 0s cubic-bezier(0.23, 0.55, 0.54, 0.97)";
+            allApp.classList.remove("open");
+
+            if (nav) nav.classList.remove("open");
+            isMo = false;
+
+            Object.values(clickables).forEach((el) => {
+                el.style.display = "block";
+            });
+        }
+    </script>
+
+
+
+
+
+  <script>
+    // Hiển thị loading trong 5 giây rồi ẩn
+    setTimeout(() => {
+      const loading = document.getElementById("loading-screen");
+      loading.style.opacity = "0";
+      setTimeout(() => {
+        loading.style.display = "none";
+      }, 300); // Thời gian cho hiệu ứng mờ
+    }, 5000); // 5 giây
+  </script>
+</body>
+
+</html>
